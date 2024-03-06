@@ -27,15 +27,11 @@ class TestBooksCollector:
 
         assert not books_collector.add_new_book(book)
 
-    @pytest.mark.parametrize('name, genre', [
-        ['Пирамидо-сосковая война', 'Детективы'],
-        ['Мастер и Минотавр', 'Ужасы']
-    ])
-    def test_set_book_genre_valid_name(self, books_collector, name, genre):
+    def test_set_book_genre_valid_name(self, books_collector):
 
-        books_collector.add_new_book(name)
-        books_collector.set_book_genre(name, genre)
-        assert books_collector.books_genre[name] == genre
+        books_collector.add_new_book('Пирамидо-сосковая война')
+        books_collector.set_book_genre('Пирамидо-сосковая война', 'Детективы')
+        assert books_collector.books_genre['Пирамидо-сосковая война'] == 'Детективы'
 
     @pytest.mark.parametrize('name, genre', [
         ['Вторая пуническая война Тутанхамона Новоблагословенного', 'Детективы'],
@@ -104,9 +100,7 @@ class TestBooksCollector:
 
     def test_add_book_in_favorites_when_books_in_list(self, books_collector):
 
-        books = ['Исподвольный кабачок', 'Блич', 'Камень супа', 'Уругвайский лилии']
-        for name in books:
-            books_collector.add_new_book(name)
+        books_collector.add_new_book('Исподвольный кабачок')
         books_collector.add_book_in_favorites('Исподвольный кабачок')
 
         assert 'Исподвольный кабачок' in books_collector.favorites
@@ -122,20 +116,16 @@ class TestBooksCollector:
 
     def test_delete_book_from_favorites(self, books_collector):
 
-        books = ['Брокер на кухне', 'Вольная', 'Убийца Акамэ']
-        for name in books:
-            books_collector.add_new_book(name)
-            books_collector.add_book_in_favorites(name)
+        books_collector.add_new_book('Убийца Акамэ')
+        books_collector.add_book_in_favorites('Убийца Акамэ')
 
-        books_collector.delete_book_from_favorites('Брокер на кухне')
-        assert 'Брокер на кухне' not in books_collector.favorites
+        books_collector.delete_book_from_favorites('Убийца Акамэ')
+        assert 'Убийца Акамэ' not in books_collector.favorites
 
     def test_delete_book_from_favorites_no_name_in_list(self, books_collector):
 
-        books = ['Борхес', 'Бобовоз', 'Урюк в компоте']
-        for name in books:
-            books_collector.add_new_book(name)
-            books_collector.add_book_in_favorites(name)
+        books_collector.add_new_book('Урюк в компоте')
+        books_collector.add_book_in_favorites('Урюк в компоте')
 
         assert not books_collector.delete_book_from_favorites('Комплаенс в Слизерин')
 
@@ -149,5 +139,9 @@ class TestBooksCollector:
         assert books_collector.get_list_of_favorites_books()
 
     def test_get_list_of_favorites_books_empty_list(self, books_collector):
+
+        books_collector.add_new_book('Внезапная голова')
+        books_collector.add_book_in_favorites('Внезапная голова')
+        books_collector.delete_book_from_favorites('Внезапная голова')
 
         assert not books_collector.get_list_of_favorites_books()

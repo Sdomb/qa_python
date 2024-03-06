@@ -234,10 +234,17 @@
         assert books_collector.get_list_of_favorites_books()
 ```
 ---
-20. Тест проверяет что метод не вернет ничего, если списка избранного нет.
+20. Тест проверяет что после удаления единственной книги из списка избранного, 
+метод получения списка избранного вернет пустой список.
+Добавляем книгу, зате добавляем её в избранное и удаляем из избранного.
+Ассертим метод.
 ```
-    def test_get_list_of_favorites_books_empty_list(self, books_collector):
+        def test_get_list_of_favorites_books_empty_list(self, books_collector):
 
+        books_collector.add_new_book('Внезапная голова')
+        books_collector.add_book_in_favorites('Внезапная голова')
+        books_collector.delete_book_from_favorites('Внезапная голова')
+        
         assert not books_collector.get_list_of_favorites_books()
 
 ```
